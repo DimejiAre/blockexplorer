@@ -1,5 +1,7 @@
-import { Alchemy, Network } from 'alchemy-sdk';
+import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { useEffect, useState } from 'react';
+import Blocks from './components/Blocks';
+import Transactions from './components/Transactions';
 
 import './App.css';
 
@@ -21,6 +23,9 @@ const alchemy = new Alchemy(settings);
 
 function App() {
   const [blockNumber, setBlockNumber] = useState();
+  const [gasPrice, setGasPrice] = useState();
+  const [blocks, setBlocks] = useState([])
+  const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     async function getBlockNumber() {
@@ -30,7 +35,47 @@ function App() {
     getBlockNumber();
   });
 
-  return <div className="App">Block Number: {blockNumber}</div>;
+  useEffect(() => {
+    async function getGasPrice() {
+      setGasPrice(Utils.formatUnits(await alchemy.core.getGasPrice(), "gwei"));
+    }
+
+    getGasPrice();
+  });
+
+  useEffect(() => {
+    async function getBlocks() {
+      const blockNumbers = [];
+      for (let i = 0; i < 6; i++) {
+        blockNumbers.push(await alchemy.core.getBlock(blockNumber - i))
+      }
+      setBlocks(blockNumbers);
+    }
+
+    getBlocks();
+  }, [blockNumber]);
+
+  useEffect(() => {
+    async function getTransactions() {
+      const block = await alchemy.core.getBlockWithTransactions(blockNumber)
+      setTransactions(block.transactions.splice(0,5)) 
+    }
+
+    getTransactions();
+  }, [blockNumber]);
+
+  // Todos
+  // getting details for individual transactions? //provider.getTransaction( hash )
+  // provider.getFeeData( )
+
+  return (
+    <>
+      <div className="App">Most Recent Block Number: {blockNumber}</div>
+      <div className="App">Estimated Gas Price: {gasPrice} Gwei</div>
+      <Blocks blocks={blocks} />
+      <Transactions transactions={transactions}/>
+    </>
+  )
 }
 
 export default App;
