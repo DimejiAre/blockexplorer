@@ -1,7 +1,9 @@
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { useEffect, useState } from 'react';
-import Blocks from './components/Blocks';
-import Transactions from './components/Transactions';
+import Header from './components/Header';
+import Search from './components/Search';
+import BlockStats from './components/BlockStats';
+import BlockDetails from './components/BlockDetails';
 
 import './App.css';
 
@@ -32,35 +34,29 @@ function App() {
       setBlockNumber(await alchemy.core.getBlockNumber());
     }
 
-    getBlockNumber();
-  });
-
-  useEffect(() => {
     async function getGasPrice() {
       setGasPrice(Utils.formatUnits(await alchemy.core.getGasPrice(), "gwei"));
     }
 
+    getBlockNumber();
     getGasPrice();
   });
 
   useEffect(() => {
     async function getBlocks() {
       const blockNumbers = [];
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 5; i++) {
         blockNumbers.push(await alchemy.core.getBlock(blockNumber - i))
       }
       setBlocks(blockNumbers);
     }
 
-    getBlocks();
-  }, [blockNumber]);
-
-  useEffect(() => {
     async function getTransactions() {
       const block = await alchemy.core.getBlockWithTransactions(blockNumber)
-      setTransactions(block.transactions.splice(0,5)) 
+      setTransactions(block.transactions.splice(0, 5))
     }
 
+    getBlocks();
     getTransactions();
   }, [blockNumber]);
 
@@ -69,12 +65,12 @@ function App() {
   // provider.getFeeData( )
 
   return (
-    <>
-      <div className="App">Most Recent Block Number: {blockNumber}</div>
-      <div className="App">Estimated Gas Price: {gasPrice} Gwei</div>
-      <Blocks blocks={blocks} />
-      <Transactions transactions={transactions}/>
-    </>
+    <div className="container">
+      <Header />
+      <Search />
+      <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} />
+      <BlockDetails blocks={blocks} transactions={transactions} />
+    </div>
   )
 }
 
