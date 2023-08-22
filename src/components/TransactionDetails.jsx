@@ -15,12 +15,17 @@ export default function TransactionDetails() {
 
   useEffect(() => {
     async function getTransactionbyHash() {
-      const transaction = await alchemy.core.getTransaction(params.hash);
+      let transaction = await alchemy.core.getTransaction(params.hash);
+      transaction = {...transaction,
+        value: Utils.formatEther(transaction.value.toString()),
+        gasLimit: Utils.formatUnits(transaction.gasLimit.toString(), 'gwei'),
+        gasPrice: Utils.formatUnits(transaction.gasPrice.toString(), 'gwei')
+      }
       setTransactionDetails(transaction);
     }
 
     getTransactionbyHash();
-  });
+  }, [params.hash]);
 
   return (
     <div className="transactionDetails">
@@ -29,10 +34,10 @@ export default function TransactionDetails() {
       <div>Block Hash: {transactionDetails.blockHash}</div>
       <div>Sender: {transactionDetails.from}</div>
       <div>Recipient: {transactionDetails.to}</div>
-      {/* <div>Value: {(transactionDetails.value)}</div> */}
+      <div>Value: {transactionDetails.value} Ether</div>
       <div>Confirmations: {transactionDetails.confirmations}</div>
-      {/* <div>Gas Price: {parseFloat(transactionDetails.gasLimit)}</div>
-      <div>Gas Limit: {parseFloat(transactionDetails.gasPrice)}</div> */}
+      <div>Gas Price: {transactionDetails.gasLimit} Gwei</div>
+      <div>Gas Limit: {transactionDetails.gasPrice} Gwei</div>
       <div>Nonce: {transactionDetails.nonce}</div>
     </div>
   );

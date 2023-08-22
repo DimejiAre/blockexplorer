@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Header from './components/Header';
 import Search from './components/Search';
 import BlockStats from './components/BlockStats';
-import BlockDetails from './components/BlockDetails';
+import BlockOverview from './components/BlockOverview';
 import TransactionDetails from './components/TransactionDetails';
+import BlockDetails from './components/BlockDetails';
 import './App.css';
 
 // Refer to the README doc for more information about using API
@@ -71,11 +72,12 @@ function App() {
               <>
                 <Search />
                 <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} />
-                <BlockDetails blocks={blocks} transactions={transactions} />
+                <BlockOverview blocks={blocks} transactions={transactions} />
               </>
             }
           />
           <Route path='/transaction/:hash' element={<TransactionDetails />} />
+          <Route path='/block/:number' element={<BlockDetails />} />
         </Routes>
       </div>
     </Router>
