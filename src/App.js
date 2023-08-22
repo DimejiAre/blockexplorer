@@ -7,6 +7,7 @@ import BlockStats from './components/BlockStats';
 import BlockOverview from './components/BlockOverview';
 import TransactionDetails from './components/TransactionDetails';
 import BlockDetails from './components/BlockDetails';
+import AccountDetails from './components/AccountDetails';
 import './App.css';
 
 // Refer to the README doc for more information about using API
@@ -78,6 +79,7 @@ function App() {
           />
           <Route path='/transaction/:hash' element={<TransactionDetails />} />
           <Route path='/block/:number' element={<BlockDetails />} />
+          <Route path='/address/:address' element={<AccountDetails />} />
         </Routes>
       </div>
     </Router>
