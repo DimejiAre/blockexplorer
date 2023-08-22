@@ -59,8 +59,12 @@ function App() {
   }, []);
 
   // Todos
-  // getting details for individual transactions? //provider.getTransaction( hash )
+  // search for transactions and blocks //provider.getTransaction( hash )
   // provider.getFeeData( )
+  // back buttons on detail pages
+  // list of transactions on block details page
+  // styling
+  // make addresses/hashes clickable
 
   return (
     <Router>
