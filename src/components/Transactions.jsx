@@ -1,12 +1,14 @@
-import React from 'react';
-import Transaction from './Transaction';
+import Transaction from "./Transaction";
 
-export default function Transactions({transactions}) {
-
-    return (
-        <>
-            <h3>Latest Transactions</h3>
-            <div>{transactions.map(transaction => <Transaction transactionDetails={transaction}/>)}</div>  
-        </>
-    )
+export default function Transactions({ transactions }) {
+  return (
+    <div className="blockDetail">
+      <h3>Latest Transactions</h3>
+      <div>
+        {transactions.map((transaction) => (
+          <Transaction transactionDetails={transaction} />
+        ))}
+      </div>
+    </div>
+  );
 }
