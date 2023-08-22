@@ -1,10 +1,11 @@
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Header from './components/Header';
 import Search from './components/Search';
 import BlockStats from './components/BlockStats';
 import BlockDetails from './components/BlockDetails';
-
+import TransactionDetails from './components/TransactionDetails';
 import './App.css';
 
 // Refer to the README doc for more information about using API
@@ -30,47 +31,54 @@ function App() {
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
-    async function getBlockNumber() {
-      setBlockNumber(await alchemy.core.getBlockNumber());
-    }
-
     async function getGasPrice() {
       setGasPrice(Utils.formatUnits(await alchemy.core.getGasPrice(), "gwei"));
     }
-
-    getBlockNumber();
     getGasPrice();
-  });
+  }, []);
 
   useEffect(() => {
-    async function getBlocks() {
-      const blockNumbers = [];
-      for (let i = 0; i < 5; i++) {
-        blockNumbers.push(await alchemy.core.getBlock(blockNumber - i))
-      }
-      setBlocks(blockNumbers);
-    }
+    async function getBlocksAndTransactions() {
+      const blockNumber = await alchemy.core.getBlockNumber();
+      setBlockNumber(await alchemy.core.getBlockNumber());
 
-    async function getTransactions() {
+      const blocks = [];
+      for (let i = 0; i < 5; i++) {
+        console.log(blockNumber, i , blockNumber - i)
+        blocks.push(await alchemy.core.getBlock(parseInt(blockNumber) - i))
+      }
+      setBlocks(blocks);
+
       const block = await alchemy.core.getBlockWithTransactions(blockNumber)
       setTransactions(block.transactions.splice(0, 5))
     }
 
-    getBlocks();
-    getTransactions();
-  }, [blockNumber]);
+    getBlocksAndTransactions();
+  }, []);
 
   // Todos
   // getting details for individual transactions? //provider.getTransaction( hash )
   // provider.getFeeData( )
 
   return (
-    <div className="container">
-      <Header />
-      <Search />
-      <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} />
-      <BlockDetails blocks={blocks} transactions={transactions} />
-    </div>
+    <Router>
+      <div className="container">
+        <Header />
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                <Search />
+                <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} />
+                <BlockDetails blocks={blocks} transactions={transactions} />
+              </>
+            }
+          />
+          <Route path='/transaction/:hash' element={<TransactionDetails />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
