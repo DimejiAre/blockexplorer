@@ -6,7 +6,7 @@ export default function Transactions({ transactions }) {
       <h3>Latest Transactions</h3>
       <div>
         {transactions.map((transaction) => (
-          <Transaction transactionDetails={transaction} />
+          <Transaction key={transaction.hash} transactionDetails={transaction} />
         ))}
       </div>
     </div>
