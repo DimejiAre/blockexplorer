@@ -1,6 +1,6 @@
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const settings = {
   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
@@ -12,6 +12,7 @@ const alchemy = new Alchemy(settings);
 export default function BlockDetails() {
   const [blockDetails, setBlockDetails] = useState({});
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getBlock() {
@@ -27,17 +28,45 @@ export default function BlockDetails() {
     getBlock();
   }, [params.number]);
 
+  const onClickButton = (e) => {
+    e.preventDefault()
+    navigate("/")
+  }
+
   return (
-    <div className="blockDetails">
-      <div>Hash: {blockDetails.hash}</div>
-      <div>Number: {blockDetails.number}</div>
-      <div>Block Hash: {blockDetails.blockHash}</div>
-      <div>difficulty: {blockDetails.difficulty}</div>
-      <div>timestamp: {blockDetails.timestamp}</div>
-      <div>miner: {blockDetails.miner}</div>
-      <div>Gas Used: {blockDetails.gasUsed} Gwei</div>
-      <div>Gas Limit: {blockDetails.gasPrice} Gwei</div>
-      <div>Nonce: {blockDetails.nonce}</div>
+    <div className="details">
+      <div className="detailsHeader">
+        <h3>Block Details</h3>
+        <button onClick={onClickButton}>Back</button>
+      </div>
+      <div className="detailsData">
+        <table>
+          <tr>
+            <td>Hash:</td><td>{blockDetails.hash}</td>
+          </tr>
+          <tr>
+            <td>Number:</td><td>{blockDetails.number}</td>
+          </tr>
+          <tr>
+            <td>difficulty:</td><td>{blockDetails.difficulty}</td>
+          </tr>
+          <tr>
+            <td>timestamp:</td><td>{blockDetails.timestamp} Ether</td>
+          </tr>
+          <tr>
+            <td>miner:</td><td>{blockDetails.miner}</td>
+          </tr>
+          <tr>
+            <td>Gas Price:</td><td>{blockDetails.gasPrice} Gwei</td>
+          </tr>
+          <tr>
+            <td>Gas Used:</td><td>{blockDetails.gasUsed} Gwei</td>
+          </tr>
+          <tr>
+            <td>Nonce:</td><td>{blockDetails.nonce}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   );
 }

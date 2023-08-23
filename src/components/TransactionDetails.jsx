@@ -34,12 +34,12 @@ export default function TransactionDetails() {
   }
 
   return (
-    <div className="transactionDetails">
-      <div className="transactionDetailsHeader">
+    <div className="details">
+      <div className="detailsHeader">
         <h3>Transaction Details</h3>
         <button onClick={onClickButton}>Back</button>
       </div>
-      <div className="transactionDetailsData">
+      <div className="detailsData">
         <table>
           <tr>
             <td>Transaction Hash:</td><td>{transactionDetails.hash}</td>

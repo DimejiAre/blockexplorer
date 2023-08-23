@@ -57,12 +57,12 @@
   }
 }
 
-.transactionDetails{
+.details{
   display: flex;
   flex-direction: column;
   padding: 20px;
 
-  .transactionDetailsHeader{
+  .detailsHeader{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
