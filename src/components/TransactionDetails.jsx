@@ -1,6 +1,6 @@
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const settings = {
   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
@@ -12,6 +12,7 @@ const alchemy = new Alchemy(settings);
 export default function TransactionDetails() {
   const [transactionDetails, setTransactionDetails] = useState({});
   const params = useParams();
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function getTransactionbyHash() {
@@ -27,18 +28,51 @@ export default function TransactionDetails() {
     getTransactionbyHash();
   }, [params.hash]);
 
+  const onClickButton = (e) => {
+    e.preventDefault()
+    navigate("/")
+  }
+
   return (
     <div className="transactionDetails">
-      <div>Transaction Hash: {transactionDetails.hash}</div>
-      <div>Block Number: {transactionDetails.blockNumber}</div>
-      <div>Block Hash: {transactionDetails.blockHash}</div>
-      <div>Sender: {transactionDetails.from}</div>
-      <div>Recipient: {transactionDetails.to}</div>
-      <div>Value: {transactionDetails.value} Ether</div>
-      <div>Confirmations: {transactionDetails.confirmations}</div>
-      <div>Gas Price: {transactionDetails.gasLimit} Gwei</div>
-      <div>Gas Limit: {transactionDetails.gasPrice} Gwei</div>
-      <div>Nonce: {transactionDetails.nonce}</div>
+      <div className="transactionDetailsHeader">
+        <h3>Transaction Details</h3>
+        <button onClick={onClickButton}>Back</button>
+      </div>
+      <div className="transactionDetailsData">
+        <table>
+          <tr>
+            <td>Transaction Hash:</td><td>{transactionDetails.hash}</td>
+          </tr>
+          <tr>
+            <td>Block Number:</td><td>{transactionDetails.blockNumber}</td>
+          </tr>
+          <tr>
+            <td>Block Hash::</td><td>{transactionDetails.blockHash}</td>
+          </tr>
+          <tr>
+            <td>Sender:</td><td>{transactionDetails.from}</td>
+          </tr>
+          <tr>
+            <td>Recipient:</td><td>{transactionDetails.to}</td>
+          </tr>
+          <tr>
+            <td>Value:</td><td>{transactionDetails.value} Ether</td>
+          </tr>
+          <tr>
+            <td>Confirmations:</td><td>{transactionDetails.confirmations}</td>
+          </tr>
+          <tr>
+            <td>Gas Price:</td><td>{transactionDetails.gasPrice} Gwei</td>
+          </tr>
+          <tr>
+            <td>Gas Limit:</td><td>{transactionDetails.gasLimit} Gwei</td>
+          </tr>
+          <tr>
+            <td>Nonce:</td><td>{transactionDetails.nonce}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   );
 }

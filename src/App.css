@@ -60,7 +60,15 @@
 .transactionDetails{
   display: flex;
   flex-direction: column;
-  padding: 20px
+  padding: 20px;
+
+  .transactionDetailsHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px 0;
+  }
 }
 
 /* .App {
