@@ -69,7 +69,6 @@ function App() {
 
   // Todos
   // search for transactions and blocks //provider.getTransaction( hash )
-  // list of transactions on block details page
   // styling
   // make addresses/hashes clickable
 

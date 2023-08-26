@@ -1,6 +1,7 @@
 import { Alchemy, Network, Utils } from "alchemy-sdk";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Transactions from "./Transactions";
 
 const settings = {
   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
@@ -11,18 +12,20 @@ const alchemy = new Alchemy(settings);
 
 export default function BlockDetails() {
   const [blockDetails, setBlockDetails] = useState({});
+  const [blockTransactions, setBlockTransactions] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function getBlock() {
-      let block = await alchemy.core.getBlock(parseInt(params.number));
+      let block = await alchemy.core.getBlockWithTransactions(parseInt(params.number));
       console.log(block)
       block = {...block,
         gasUsed: Utils.formatUnits(block.gasUsed.toString(), 'gwei'),
         gasLimit: Utils.formatUnits(block.gasLimit.toString(), 'gwei')
       }
       setBlockDetails(block);
+      setBlockTransactions(block.transactions.splice(0,5))
     }
 
     getBlock();
@@ -67,6 +70,7 @@ export default function BlockDetails() {
           </tr>
         </table>
       </div>
+      <Transactions transactions={blockTransactions}/>
     </div>
   );
 }
