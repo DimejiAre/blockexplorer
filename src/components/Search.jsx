@@ -1,19 +1,23 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Search() {
+export default function Search({latestBlockNumber}) {
   const [text, setText] = useState('')
   const navigate = useNavigate()
 
   const onSubmit = (e) => {
     e.preventDefault()
-
-    if (!text || text.length < 30 || text.length > 60) {
-      alert('Please add a valid address')
+    if (text.length < 40 && parseInt(text) <= latestBlockNumber){
+      navigate(`/block/${text}`)
+    } else if(text.length === 42){
+      navigate(`/address/${text}`)
+    } else if (text.length === 66){
+      navigate(`/transaction/${text}`)
+    }
+    else{
+      alert('Please add a valid input')
       return
     }
-
-    navigate(`/address/${text}`)
 
     setText('')
   }
@@ -25,9 +29,9 @@ export default function Search() {
         <input
           type="text"
           style={searchInputStyle}
-          placeholder="Search by Address"
+          placeholder="Search by Address / Txn Hash / Block Number"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value.trim())}
         />
       <input type='submit' value='Search'/>
       </div>

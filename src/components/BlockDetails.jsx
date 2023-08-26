@@ -19,7 +19,6 @@ export default function BlockDetails() {
   useEffect(() => {
     async function getBlock() {
       let block = await alchemy.core.getBlockWithTransactions(parseInt(params.number));
-      console.log(block)
       block = {...block,
         gasUsed: Utils.formatUnits(block.gasUsed.toString(), 'gwei'),
         gasLimit: Utils.formatUnits(block.gasLimit.toString(), 'gwei')

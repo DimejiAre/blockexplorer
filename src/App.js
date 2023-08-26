@@ -55,7 +55,6 @@ function App() {
 
       const blocks = [];
       for (let i = 0; i < 5; i++) {
-        console.log(blockNumber, i , blockNumber - i)
         blocks.push(await alchemy.core.getBlock(parseInt(blockNumber) - i))
       }
       setBlocks(blocks);
@@ -68,8 +67,7 @@ function App() {
   }, []);
 
   // Todos
-  // search for transactions and blocks //provider.getTransaction( hash )
-  // styling
+  // styling (make responsive)
   // make addresses/hashes clickable
 
   return (
@@ -81,7 +79,7 @@ function App() {
             path='/'
             element={
               <>
-                <Search />
+                <Search latestBlockNumber={blockNumber}/>
                 <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} maxFeePerGas={maxFeePerGas} maxPriorityFeePerGas={maxPriorityFeePerGas}  />
                 <BlockOverview blocks={blocks} transactions={transactions} />
               </>
