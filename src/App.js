@@ -29,14 +29,23 @@ const alchemy = new Alchemy(settings);
 function App() {
   const [blockNumber, setBlockNumber] = useState();
   const [gasPrice, setGasPrice] = useState();
+  const [maxFeePerGas, setMaxFeePerGas] = useState();
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState();
   const [blocks, setBlocks] = useState([])
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
-    async function getGasPrice() {
-      setGasPrice(Utils.formatUnits(await alchemy.core.getGasPrice(), "gwei"));
+    async function getFeeData() {
+      let { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = await alchemy.core.getFeeData()
+      gasPrice = Utils.formatUnits(gasPrice, "gwei")
+      maxFeePerGas = Utils.formatUnits(maxFeePerGas, "gwei")
+      maxPriorityFeePerGas = Utils.formatUnits(maxPriorityFeePerGas, "gwei")
+      setGasPrice(gasPrice);
+      setMaxFeePerGas(maxFeePerGas);
+      setMaxPriorityFeePerGas(maxPriorityFeePerGas)
     }
-    getGasPrice();
+
+    getFeeData();
   }, []);
 
   useEffect(() => {
@@ -60,8 +69,6 @@ function App() {
 
   // Todos
   // search for transactions and blocks //provider.getTransaction( hash )
-  // provider.getFeeData( )
-  // back buttons on detail pages
   // list of transactions on block details page
   // styling
   // make addresses/hashes clickable
@@ -76,7 +83,7 @@ function App() {
             element={
               <>
                 <Search />
-                <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} />
+                <BlockStats gasPrice={gasPrice} blockNumber={blockNumber} maxFeePerGas={maxFeePerGas} maxPriorityFeePerGas={maxPriorityFeePerGas}  />
                 <BlockOverview blocks={blocks} transactions={transactions} />
               </>
             }

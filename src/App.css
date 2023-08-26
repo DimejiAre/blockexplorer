@@ -23,15 +23,20 @@
 
 .blockStats{
   display: flex;
-  flex-direction: row;
   border: 1px solid black;
   padding: 0 20px;
   margin-bottom: 20px;
 
   .statItem{
     border-right: 1px solid black;
-    padding: 20px 20px;
+    width: 25%;
+    padding: 10px 20px;
   }
+  
+  .statItem:last-child {
+    border-right: none;
+  }
+  
 }
 
 .blockOverview{
