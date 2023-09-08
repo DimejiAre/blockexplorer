@@ -7,7 +7,7 @@ export default function Transaction({transactionDetails}) {
   // }
 
   return (
-    <div className="transaction" /*onClick={onClick}*/>
+    <div className="block-detail-item" /*onClick={onClick}*/>
       <div>Transaction Hash: {transactionDetails.hash}</div>
       <div>Block Number: {transactionDetails.blockNumber}</div>
       <p><Link to={`/transaction/${transactionDetails.hash}`}>View Details</Link></p>

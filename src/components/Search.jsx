@@ -24,24 +24,14 @@ export default function Search({latestBlockNumber}) {
 
   return (
     <form className="search" onSubmit={onSubmit}>
-      <div className="form-control">
-        <label>Search: </label>
         <input
+          className="search-bar"
           type="text"
-          style={searchInputStyle}
           placeholder="Search by Address / Txn Hash / Block Number"
             value={text}
             onChange={(e) => setText(e.target.value.trim())}
         />
-      <input type='submit' value='Search'/>
-      </div>
+      <input className='btn' type='submit' value='Search'/>
     </form>
   );
 }
-
-const searchInputStyle = {
-  height: "40px",
-  width: "50%",
-  borderRadius: "10px",
-  padding: "5px"
-};
